@@ -19,6 +19,7 @@
             this.load.image('recyclehier', 'assets/recyclehier.png');
             this.load.image('uitleg', 'assets/uitleg.png');
             this.load.image('kiesspelers', 'assets/kiesspelers.png');
+            this.load.image('enternumber', 'assets/enternumber.png');
             this.load.image('letsplay', 'assets/letsplay.png');
             this.load.image('recyclespeel', 'assets/recyclespeel.png');
             this.load.image('selectie', 'assets/selectie.png');
