@@ -35,7 +35,7 @@
             this.game.aantalphones = localStorage.getItem('aantalphones');
             this.game.aantalafval = localStorage.getItem('aantalafval');
 
-            console.log("Aantal afval ingegooid is:" + this.game.aantalafval);
+            // console.log("Aantal afval ingegooid is:" + this.game.aantalafval);
             if (this.game.credits === null) {
                 var cred = 0;
                 localStorage.setItem('credits', cred);

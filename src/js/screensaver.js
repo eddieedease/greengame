@@ -111,11 +111,22 @@
     // boolean for storing waste insert is triggered
     var blockInsert = false;
 
+    // Logic varsfor making API magic work
+    var currentStudId;
+    var numberofwaste;
+    // how much waste have we thrown in (currently)
+    var numberwaste = 0;
+    var numbertext = 'aantal afval:';
+    var ntext;
+    // button help images throw in screen
+    var okplay;
+    var nogoback;
+    var gobackx2 = 0;
 
     Screensaver.prototype = {
         create: function () {
             credit = localStorage.getItem('credits');
-            credit--;
+
             blockInsert = false;
             localStorage.setItem('credits', credit);
 
@@ -127,14 +138,13 @@
             video.stop();
             video.play(true);
 
-
             sprite = video.addToWorld(0, 0, 0, 0);
             sprite.x = 0;
             sprite.y = 0;
 
             // timer for choosing teams
             counter = 45;
-
+            numberwaste = 0;
             animationstarted = false;
             is1player = true;
             recyclespeel = this.game.add.sprite(70, 200, 'recyclespeel');
@@ -158,14 +168,10 @@
             readytoplay = false;
             this.game.multiplay = false;
 
-
-
-
-
             cursors = this.game.input.keyboard.createCursorKeys();
 
-
             keyz = this.input.keyboard.addKey(Phaser.Keyboard.Z);
+            keyx = this.input.keyboard.addKey(Phaser.Keyboard.X);
             keyi = this.input.keyboard.addKey(Phaser.Keyboard.I);
 
             key0 = this.input.keyboard.addKey(Phaser.Keyboard.ZERO);
@@ -185,6 +191,7 @@
 
             keyz.onDown.add(this.onDown, this);
             keyi.onDown.add(this.onDown, this);
+            keyx.onDown.add(this.onDown, this);
 
             key0.onDown.add(this.onDownNumber, this);
             key1.onDown.add(this.onDownNumber, this);
@@ -197,27 +204,34 @@
             key8.onDown.add(this.onDownNumber, this);
             key9.onDown.add(this.onDownNumber, this);
 
-
-
-
-
-
             timerdisplay2 = this.game.add.bitmapText(this.game.world.centerX + 6, 40, 'scorefont', 'testtimer', 45);
             timerdisplay2.anchor.setTo(0.5, 0.5);
             timerdisplay2.visible = true;
             timerdisplay2.setText(" ");
 
-            inputthisplay = this.game.add.bitmapText(this.game.world.centerX - 130, 140, 'scorefont', 'pin', 70);
+            inputthisplay = this.game.add.bitmapText(this.game.world.centerX, 200, 'scorefont', 'pin', 70);
             inputthisplay.visible = true;
-            inputthisplay.setText(" ");
+            inputthisplay.setText("");
 
+
+            okplay = this.game.add.image(this.game.width / 8 * 2.5, 420, 'okplay');
+            okplay.anchor.setTo(0.5, 0.5);
+            okplay.visible = false;
+            nogoback = this.game.add.image(this.game.width / 8 * 5.5, 420, 'nogoback');
+            nogoback.anchor.setTo(0.5, 0.5);
+            nogoback.visible = false;
+
+            numbertext = this.game.add.bitmapText(this.game.world.centerX, 320, 'scorefont', 'aantal:', 20);
+            ntext = this.game.add.bitmapText(this.game.world.centerX, 380, 'scorefont', '', 50);
+            numbertext.anchor.setTo(0.5, 0.5);
+            numbertext.visible = false;
+            ntext.anchor.setTo(0.5, 0.5);
+            ntext.visible = false;
 
             // WARNING IMG
             warning = this.game.add.image(this.game.width / 8 * 4, 300, 'warning');
             warning.anchor.set(0.5, 0.5);
             warning.visible = false;
-
-
         },
         resetLocalStorage: function () {
             console.log('check');
@@ -266,8 +280,16 @@
                     kiesspelers.alpha = 0;
                     letsplay.alpha = 0;
                     animationstarted = false;
-
                     blockInsert = false;
+
+                    gobackx2 = 0;
+                    enternumber = false;
+                    nogoback.visible = false;
+                    blockInsert = false;
+                    numbertext.visible = false;
+                    ntext.visible = false;
+                    enternumberpng.visible = false;
+
                     //this.game.state.start('platformer', true, false);
                 }
 
@@ -276,11 +298,8 @@
                     timerdisplay2.setText(counter);
                 }
             }
-
             ,
-
         update: function () {
-
             if (cursors.left.isDown) {
                 //  Move to the left
                 // this.game.state.start('menu', true, false);
@@ -293,9 +312,7 @@
                 selectie.x = 550;
                 this.game.multiplay = true;
             }
-
             /*canvas.clear();
-
       for (var i = 0; i < max; i++) {
         var perspective = distance / (distance + zz[i]);
         var x = this.game.world.centerX + xx[i] * perspective;
@@ -342,48 +359,57 @@
         canvas.draw('tel3', x, y);
       }
 */
-
         },
         onDownNumber: function (key) {
-
             // Only when the state of entering pin is enter allow this input
-            if (enternumber === true && inputthisplay.text.length < 6) {
+            if (enternumber === true && inputthisplay.text.length < 5) {
+                gobackx2 = 0;
                 let newNumber;
                 console.log(key.keyCode);
                 switch (key.keyCode) {
                     case 48:
-                    newNumber = '0'
+                        newNumber = '0'
                         break;
                     case 49:
-                    newNumber = '1';
+                        newNumber = '1';
                         break;
                     case 50:
-                    newNumber = '2';
+                        newNumber = '2';
                         break;
                     case 51:
-                    newNumber = '3';
+                        newNumber = '3';
                         break;
                     case 52:
-                    newNumber = '4';
+                        newNumber = '4';
                         break;
                     case 53:
-                    newNumber = '5';
+                        newNumber = '5';
                         break;
                     case 54:
-                    newNumber = '6';
+                        newNumber = '6';
                         break;
                     case 55:
-                    newNumber = '7';
+                        newNumber = '7';
                         break;
                     case 56:
-                    newNumber = '8';
+                        newNumber = '8';
                         break;
                     case 57:
-                    newNumber = '9';
+                        newNumber = '9';
                         break;
                 }
                 // Switch KEY
                 inputthisplay.setText(inputthisplay.text + newNumber);
+                inputthisplay.anchor.setTo(0.5, 0.5);
+                // 5 character display
+                if (inputthisplay.text.length === 5) {
+                    // TODO: YEAH LET's GO!
+                    numberentered = true;
+                    okplay.visible = true;
+                } else {
+                    numberentered = false;
+                    okplay.visible = false;
+                }
             }
 
 
@@ -394,14 +420,60 @@
             if (key.keyCode === 73 && blockInsert === false && enternumber === false) {
                 blockInsert = true;
                 numberentered = false;
+                numberwaste = 0;
+                ntext.text = numberwaste;
                 // enternumber = true;
                 this.insertNumber();
                 //this.kiesspeler();
             }
 
-            // if readytoplay flase en number is ready to be entered
-            if (key.keyCode === 90 && readytoplay === false && enternumber === true) {
+            if (key.keyCode === 73 && blockInsert === true){
+                numberwaste++;
+                ntext.text = numberwaste;
+            }
+
+
+
+
+            // if readytoplay false en number is ready to be entered
+            if (key.keyCode === 90 && readytoplay === false && numberentered === true) {
                 // Here we should catch the accept and cancel buttons
+                numberentered = false;
+                nogoback.visible = false;
+                numbertext.visible = false;
+                okplay.visible = false;
+                ntext.visible = false;
+                enternumberpng.visible = false;
+
+                // TODO: Here comes the API CALL to send it
+                console.log('StudID = ' + inputthisplay.text);
+                console.log('Amount of waste = ' + numberwaste);
+
+                this.kiesspeler();
+
+            }
+
+            // Canelbutton Name
+            if (key.keyCode === 88 && readytoplay === false && enternumber === true) {
+                numberentered = false;
+                okplay.visible = false;
+                if (inputthisplay.text.length === 0) {
+                    gobackx2++;
+                    console.log('goback');
+                    if (gobackx2 === 2) {
+                        gobackx2 = 0;
+                        enternumber = false;
+                        nogoback.visible = false;
+                        blockInsert = false;
+                        numbertext.visible = false;
+                        ntext.visible = false;
+                        enternumberpng.visible = false;
+                    }
+                }
+                if (inputthisplay.text.length >= 1) {
+                    let newVal = inputthisplay.text.substring(0, inputthisplay.text.length - 1);
+                    inputthisplay.setText(newVal);
+                }
             }
 
 
@@ -410,6 +482,10 @@
                 video.stop();
                 this.game.time.events.remove(chooseloop);
                 blockInsert = false;
+                currentStudId = "";
+                numberwaste = 0;
+                enternumber = false;
+                numberentered = false;
                 this.game.state.start('platformer', true, false);
             }
 
@@ -420,6 +496,7 @@
             levelsound.play();
             console.log("comes here");
             kiesspelers.alpha = 1;
+            
             kiesspelerstween = this.game.add.tween(kiesspelers).to({
                 y: this.game.height / 2
             }, 1000, Phaser.Easing.Bounce.Out, true);
@@ -437,6 +514,8 @@
         kiesspeler: function () {
             if (animationstarted === false) {
                 timerdisplay2.visible = true;
+                inputthisplay.alpha = 0;
+                enternumberpng.alpha = 0;
                 animationstarted = true;
                 this.game.stage.backgroundColor = "#000";
                 letsplay.alpha = 1;
@@ -452,6 +531,7 @@
         insertNumber: function () {
             if (animationstarted2 === false) {
                 animationstarted2 = false;
+                enternumberpng.visible = true;
                 this.game.stage.backgroundColor = "#fff";
                 enternumberpng.alpha = 1;
                 inputnumbertween = this.game.add.tween(enternumberpng).from({
@@ -464,6 +544,10 @@
         inputtweendone: function () {
             console.log('comes here');
             enternumber = true;
+            nogoback.visible = true;
+            numbertext.visible = true;
+            ntext.visible = true;
+            enternumberpng.visible = true;
         }
 
 

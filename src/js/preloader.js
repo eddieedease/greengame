@@ -26,6 +26,9 @@
             this.load.image('stopbord', 'assets/stopbord.png');
             this.load.image('perron', 'assets/perron.png');
 
+            this.load.image('okplay', 'assets/okplay.png');
+            this.load.image('nogoback', 'assets/backupbackup.png');
+
             this.load.spritesheet('stoplicht', 'assets/stoplicht.png', 140, 56);
             this.load.spritesheet('ssplastic', 'assets/ssplastic.png', 70, 70);
             this.load.spritesheet('sspapier', 'assets/sspapier.png', 70, 70);
