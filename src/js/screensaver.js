@@ -364,7 +364,7 @@
             // Only when the state of entering pin is enter allow this input
             if (enternumber === true && inputthisplay.text.length < 5) {
                 gobackx2 = 0;
-                let newNumber;
+                var newNumber;
                 console.log(key.keyCode);
                 switch (key.keyCode) {
                     case 48:
@@ -471,7 +471,7 @@
                     }
                 }
                 if (inputthisplay.text.length >= 1) {
-                    let newVal = inputthisplay.text.substring(0, inputthisplay.text.length - 1);
+                    var newVal = inputthisplay.text.substring(0, inputthisplay.text.length - 1);
                     inputthisplay.setText(newVal);
                 }
             }
