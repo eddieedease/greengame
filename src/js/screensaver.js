@@ -63,6 +63,9 @@
     // insert number animation
     var animationstarted2 = false;
 
+    // local storage var for temp holding
+    var lsstudid;
+    var lspoints;
 
 
 
@@ -448,7 +451,8 @@
                 // TODO: Here comes the API CALL to send it
                 console.log('StudID = ' + inputthisplay.text);
                 console.log('Amount of waste = ' + numberwaste);
-
+                //
+                this.handleLocalStorage(inputthisplay.text, numberwaste);
                 this.kiesspeler();
 
             }
@@ -548,6 +552,43 @@
             numbertext.visible = true;
             ntext.visible = true;
             enternumberpng.visible = true;
+        }
+        ,
+        // local Storage Operator
+        handleLocalStorage(_studid, _numwaste){
+            lspoints = localStorage.getItem(_studid);
+            console.log(lspoints);
+            console.log(_studid + ' has ' + lspoints +'points');
+            if (lspoints === null){
+                // add number of waste
+                lspoints = 0 + _numwaste;
+                console.log('StudID = new to localstorage');
+                console.log(_studid + ' has ' + lspoints + 'points');
+                //make a new entry in the localstorage
+            } else {
+                // ls exist, add points
+                lspoints = parseInt(lspoints) + _numwaste;
+                console.log('StudID Exist!');
+                console.log(_studid + ' has ' + lspoints + 'points');
+            }
+            // OK, update to localstoage DATABASE
+            localStorage.setItem(_studid, lspoints);
+            // TODO: Send data to the API
+            // TODO: Send data to the API
+            // "https://cubestick.nl/greenup/api/assignpoints" + _studid + "/" + lspoints
+            // "http://localhost/greenup/src/api/assignpoints/" + _studid + "/" + lspoints
+            this.makeIOTcall("http://localhost/greenup/src/api/assignpoints/" + _studid + "/" + lspoints);
+            // TODO: Send data to the API
+        },
+        // fire away the API calls
+        makeIOTcall: function (theUrl) {
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.onreadystatechange = function () {
+                if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+                    console.log(xmlHttp.responseText);
+            }
+            xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+            xmlHttp.send(null);
         }
 
 
