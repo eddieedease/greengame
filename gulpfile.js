@@ -44,9 +44,6 @@ gulp.task('uglify', ['clean', 'lint'], function() {
     gulp.src(paths.js)
         .pipe(concat('main.min.js'))
         .pipe(gulp.dest(paths.dist))
-        .pipe(uglify({
-            outSourceMaps: false
-        }))
         .pipe(gulp.dest(paths.dist))
         .on('error', gutil.log);
 });

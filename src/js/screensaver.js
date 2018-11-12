@@ -67,7 +67,7 @@
     var lsstudid;
     var lspoints;
 
-
+    var numbertext;
 
     var is1player = true;
 
@@ -119,7 +119,7 @@
     var numberofwaste;
     // how much waste have we thrown in (currently)
     var numberwaste = 0;
-    var numbertext = 'aantal afval:';
+    
     var ntext;
     // button help images throw in screen
     var okplay;
@@ -140,7 +140,7 @@
             video = this.game.add.video('introfilm');
             video.stop();
             video.play(true);
-
+            
             sprite = video.addToWorld(0, 0, 0, 0);
             sprite.x = 0;
             sprite.y = 0;
@@ -544,7 +544,6 @@
                 inputnumbertween.onComplete.add(this.inputtweendone, this);
             }
         },
-
         inputtweendone: function () {
             console.log('comes here');
             enternumber = true;
@@ -552,13 +551,12 @@
             numbertext.visible = true;
             ntext.visible = true;
             enternumberpng.visible = true;
-        }
-        ,
+        },
         // local Storage Operator
         handleLocalStorage(_studid, _numwaste){
             lspoints = localStorage.getItem(_studid);
             console.log(lspoints);
-            console.log(_studid + ' has ' + lspoints +'points');
+            console.log(_studid + ' has ' + lspoints + 'points');
             if (lspoints === null){
                 // add number of waste
                 lspoints = 0 + _numwaste;
@@ -577,15 +575,17 @@
             // TODO: Send data to the API
             // "https://cubestick.nl/greenup/api/assignpoints" + _studid + "/" + lspoints
             // "http://localhost/greenup/src/api/assignpoints/" + _studid + "/" + lspoints
-            this.makeIOTcall("http://localhost/greenup/src/api/assignpoints/" + _studid + "/" + lspoints);
+            this.makeIOTcall("http://ewastearcades.nl/greenup/api/assignpoints/" + _studid + "/" + lspoints);
             // TODO: Send data to the API
         },
         // fire away the API calls
         makeIOTcall: function (theUrl) {
             var xmlHttp = new XMLHttpRequest();
             xmlHttp.onreadystatechange = function () {
-                if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+                if (xmlHttp.readyState === 4 && xmlHttp.status === 200){
                     console.log(xmlHttp.responseText);
+                }
+                    
             }
             xmlHttp.open("GET", theUrl, true); // true for asynchronous 
             xmlHttp.send(null);
