@@ -177,16 +177,16 @@
             keyx = this.input.keyboard.addKey(Phaser.Keyboard.X);
             keyi = this.input.keyboard.addKey(Phaser.Keyboard.I);
 
-            key0 = this.input.keyboard.addKey(Phaser.Keyboard.ZERO);
-            key1 = this.input.keyboard.addKey(Phaser.Keyboard.ONE);
-            key2 = this.input.keyboard.addKey(Phaser.Keyboard.TWO);
-            key3 = this.input.keyboard.addKey(Phaser.Keyboard.THREE);
-            key4 = this.input.keyboard.addKey(Phaser.Keyboard.FOUR);
-            key5 = this.input.keyboard.addKey(Phaser.Keyboard.FIVE);
-            key6 = this.input.keyboard.addKey(Phaser.Keyboard.SIX);
-            key7 = this.input.keyboard.addKey(Phaser.Keyboard.SEVEN);
-            key8 = this.input.keyboard.addKey(Phaser.Keyboard.EIGHT);
-            key9 = this.input.keyboard.addKey(Phaser.Keyboard.NINE);
+            key0 = this.input.keyboard.addKey(Phaser.Keyboard.NUMPAD_0);
+            key1 = this.input.keyboard.addKey(Phaser.Keyboard.NUMPAD_1);
+            key2 = this.input.keyboard.addKey(Phaser.Keyboard.NUMPAD_2);
+            key3 = this.input.keyboard.addKey(Phaser.Keyboard.NUMPAD_3);
+            key4 = this.input.keyboard.addKey(Phaser.Keyboard.NUMPAD_4);
+            key5 = this.input.keyboard.addKey(Phaser.Keyboard.NUMPAD_5);
+            key6 = this.input.keyboard.addKey(Phaser.Keyboard.NUMPAD_6);
+            key7 = this.input.keyboard.addKey(Phaser.Keyboard.NUMPAD_7);
+            key8 = this.input.keyboard.addKey(Phaser.Keyboard.NUMPAD_8);
+            key9 = this.input.keyboard.addKey(Phaser.Keyboard.NUMPAD_9);
 
             keyh = this.input.keyboard.addKey(Phaser.Keyboard.H);
             keyh.onDown.add(this.resetLocalStorage, this);
@@ -364,40 +364,42 @@
 */
         },
         onDownNumber: function (key) {
+            
             // Only when the state of entering pin is enter allow this input
             if (enternumber === true && inputthisplay.text.length < 5) {
                 gobackx2 = 0;
                 var newNumber;
                 console.log(key.keyCode);
+               
                 switch (key.keyCode) {
-                    case 48:
+                    case 96:
                         newNumber = '0'
                         break;
-                    case 49:
+                    case 97:
                         newNumber = '1';
                         break;
-                    case 50:
+                    case 98:
                         newNumber = '2';
                         break;
-                    case 51:
+                    case 99:
                         newNumber = '3';
                         break;
-                    case 52:
+                    case 100:
                         newNumber = '4';
                         break;
-                    case 53:
+                    case 101:
                         newNumber = '5';
                         break;
-                    case 54:
+                    case 102:
                         newNumber = '6';
                         break;
-                    case 55:
+                    case 103:
                         newNumber = '7';
                         break;
-                    case 56:
+                    case 104:
                         newNumber = '8';
                         break;
-                    case 57:
+                    case 105:
                         newNumber = '9';
                         break;
                 }
