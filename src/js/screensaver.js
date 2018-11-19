@@ -117,6 +117,12 @@
     // Logic varsfor making API magic work
     var currentStudId;
     var numberofwaste;
+    var currentPlays;
+    // NOTE: Important, how much is the treshold of playing?
+    var amountOfWasteForPlay = 5; 
+
+
+
     // how much waste have we thrown in (currently)
     var numberwaste = 0;
     
@@ -219,12 +225,13 @@
 
             okplay = this.game.add.image(this.game.width / 8 * 2.5, 420, 'okplay');
             okplay.anchor.setTo(0.5, 0.5);
+            okplay.alpha = 0.5;
             okplay.visible = false;
             nogoback = this.game.add.image(this.game.width / 8 * 5.5, 420, 'nogoback');
             nogoback.anchor.setTo(0.5, 0.5);
             nogoback.visible = false;
 
-            numbertext = this.game.add.bitmapText(this.game.world.centerX, 320, 'scorefont', 'aantal:', 20);
+            numbertext = this.game.add.bitmapText(this.game.world.centerX, 320, 'scorefont', 'aantal afval:', 20);
             ntext = this.game.add.bitmapText(this.game.world.centerX, 380, 'scorefont', '', 50);
             numbertext.anchor.setTo(0.5, 0.5);
             numbertext.visible = false;
@@ -315,8 +322,9 @@
                 selectie.x = 550;
                 this.game.multiplay = true;
             }
-            /*canvas.clear();
-      for (var i = 0; i < max; i++) {
+        
+        /*canvas.clear();
+        for (var i = 0; i < max; i++) {
         var perspective = distance / (distance + zz[i]);
         var x = this.game.world.centerX + xx[i] * perspective;
         z
@@ -408,12 +416,14 @@
                 inputthisplay.anchor.setTo(0.5, 0.5);
                 // 5 character display
                 if (inputthisplay.text.length === 5) {
-                    // TODO: YEAH LET's GO!
+                    
                     numberentered = true;
-                    okplay.visible = true;
+                    okplay.alpha = 1;
+
+                    // TODO: TODO:  Some logic here please for checking if game can be played
                 } else {
                     numberentered = false;
-                    okplay.visible = false;
+                    okplay.alpha = 0.5;
                 }
             }
 
@@ -462,7 +472,7 @@
             // Canelbutton Name
             if (key.keyCode === 88 && readytoplay === false && enternumber === true) {
                 numberentered = false;
-                okplay.visible = false;
+                okplay.alpha = 0.5;
                 if (inputthisplay.text.length === 0) {
                     gobackx2++;
                     console.log('goback');
@@ -550,15 +560,33 @@
             console.log('comes here');
             enternumber = true;
             nogoback.visible = true;
+            okplay.visible = true;
             numbertext.visible = true;
             ntext.visible = true;
             enternumberpng.visible = true;
         },
+
+        getLocalStorage(_studid){
+            userStorage = localStorage.getItem(_studid);
+            userPlays = localStorage.getItem('x' + _studid);
+            if (userStorage === null){
+                console.log('There are no records of this user');
+                // TODO: note to user
+            } else {
+                console.log('User exists');
+                currentStudId = userStorage;
+                currentPlays = parseInt(userPlays);
+            }
+
+        },
+
         // local Storage Operator
         handleLocalStorage(_studid, _numwaste){
             lspoints = localStorage.getItem(_studid);
             console.log(lspoints);
             console.log(_studid + ' has ' + lspoints + 'points');
+            // Below functionality first checks if there is an existing value in Local storage
+            // if so update it, if not create it with 0 value;
             if (lspoints === null){
                 // add number of waste
                 lspoints = 0 + _numwaste;
@@ -573,9 +601,13 @@
             }
             // OK, update to localstoage DATABASE
             localStorage.setItem(_studid, lspoints);
-            // TODO: Send data to the API
-            // TODO: Send data to the API
-            // "https://cubestick.nl/greenup/api/assignpoints" + _studid + "/" + lspoints
+            // have we start a game
+            // TODO: TODO: TODO: TODO: Embed the var to check this if in the function
+            If (lspoints === null) 
+            {
+                localStorage.setItem('x' + _studid, currentPlays + 1);
+            }
+            // TODO: Send data to wthe API
             // "http://localhost/greenup/src/api/assignpoints/" + _studid + "/" + lspoints
             this.makeIOTcall("http://ewastearcades.nl/greenup/api/assignpoints/" + _studid + "/" + lspoints);
             // TODO: Send data to the API
