@@ -121,6 +121,9 @@
     // NOTE: Important, how much is the treshold of playing?
     var amountOfWasteForPlay = 5; 
 
+    var userStorage;
+    var userPlays;
+
 
 
     // how much waste have we thrown in (currently)
@@ -419,8 +422,11 @@
                     
                     numberentered = true;
                     okplay.alpha = 1;
+                    
 
                     // TODO: TODO:  Some logic here please for checking if game can be played
+                     this.getLocalStorage(inputthisplay.text);
+
                 } else {
                     numberentered = false;
                     okplay.alpha = 0.5;
@@ -465,6 +471,9 @@
                 console.log('Amount of waste = ' + numberwaste);
                 //
                 this.handleLocalStorage(inputthisplay.text, numberwaste);
+
+
+
                 this.kiesspeler();
 
             }
@@ -565,17 +574,34 @@
             ntext.visible = true;
             enternumberpng.visible = true;
         },
-
+        // TODO: TODO: TODO: TODO:
+        // TODO: TODO: TODO: TODO:
+        // de LOCALSTORAGE FUNCTIES MOETEN GEMERGERD WORDEN
         getLocalStorage(_studid){
             userStorage = localStorage.getItem(_studid);
             userPlays = localStorage.getItem('x' + _studid);
             if (userStorage === null){
                 console.log('There are no records of this user');
+                // NOTE: User cannot play
                 // TODO: note to user
+                currentPlays = 0;
+                userStorage = numberwaste;
+                currentStudId = _studid;
+                console.log('HEEFT NIETTTT GENOEG PUNTEN, namelijk ' + userStorage + ' nodig is ' + (amountOfWasteForPlay * currentPlays));
+
             } else {
                 console.log('User exists');
-                currentStudId = userStorage;
                 currentPlays = parseInt(userPlays);
+                console.log(currentPlays);
+                // TODO: Check if the user can Play
+                // amountOfwasteForplay = 5
+                if ( userStorage >= (amountOfWasteForPlay * currentPlays)){
+                    // Should have enough points
+                    console.log('HEEFT GENOEG PUNTEN, namelijk ' + userStorage + ' nodig is ' + (amountOfWasteForPlay * currentPlays));
+                } else {
+                    // Not enough points so Should note howmany
+                    console.log('HEEFT GENOEG PUNTEN, namelijk ' + userStorage + ' nodig is ' + (amountOfWasteForPlay * currentPlays));
+                }
             }
 
         },
@@ -603,9 +629,10 @@
             localStorage.setItem(_studid, lspoints);
             // have we start a game
             // TODO: TODO: TODO: TODO: Embed the var to check this if in the function
-            If (lspoints === null) 
+            if (lspoints === null) 
             {
-                localStorage.setItem('x' + _studid, currentPlays + 1);
+                // there is no localstorageitem, so store number of plays of user as 0 (x)
+                localStorage.setItem('x' + _studid, 0);
             }
             // TODO: Send data to wthe API
             // "http://localhost/greenup/src/api/assignpoints/" + _studid + "/" + lspoints
