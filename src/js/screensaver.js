@@ -118,17 +118,24 @@
     var currentStudId;
     var numberofwaste;
     var currentPlays;
-    // NOTE: Important, how much is the treshold of playing?
-    var amountOfWasteForPlay = 5; 
 
+
+    // NOTE: Important, how much is the treshold of playing?
+    var amountOfWasteForPlay = 5;
+    var canPlay = false;
+    var wantToPlay = false;
+
+    // Current user vars
     var userStorage;
     var userPlays;
 
 
+    var keyDel;
+
 
     // how much waste have we thrown in (currently)
     var numberwaste = 0;
-    
+
     var ntext;
     // button help images throw in screen
     var okplay;
@@ -149,10 +156,29 @@
             video = this.game.add.video('introfilm');
             video.stop();
             video.play(true);
-            
+
             sprite = video.addToWorld(0, 0, 0, 0);
             sprite.x = 0;
             sprite.y = 0;
+
+
+            this.game.input.keyboard.onDownCallback = function (e) {
+
+                // The delete button on numpad
+                if (e.keyCode === 110 && readytoplay === false && enternumber === true) {
+                    numberentered = false;
+                    okplay.alpha = 0.5;
+
+                    if (inputthisplay.text.length >= 1) {
+                        var newVal = inputthisplay.text.substring(0, inputthisplay.text.length - 1);
+                        inputthisplay.setText(newVal);
+                    }
+                }
+                //for demonstration, next line prints the keyCode to console
+                //console.log(e.keyCode);
+
+                //here comes your stuff, you might check for certain key, or just trigger a function
+            };
 
             // timer for choosing teams
             counter = 45;
@@ -277,41 +303,36 @@
         },
         creditgone: function () {
             this.game.time.events.remove(Phaser.Timer.SECOND * 3, this.creditgone, this);
-
             //this.game.state.start('menu', true, false);
         },
-
         timerLoop: function () {
-                if (counter === 0) {
-                    // TODO need some logic to go through nexxt screen but keep current selection
-                    //video.stop();
-                    timerdisplay2.setText(" ");
-                    this.game.time.events.remove(chooseloop);
-                    counter = 45;
-                    timerdisplay2.visible = false;
-                    selectie.alpha = 0;
-                    kiesspelers.alpha = 0;
-                    letsplay.alpha = 0;
-                    animationstarted = false;
-                    blockInsert = false;
-
-                    gobackx2 = 0;
-                    enternumber = false;
-                    nogoback.visible = false;
-                    blockInsert = false;
-                    numbertext.visible = false;
-                    ntext.visible = false;
-                    enternumberpng.visible = false;
-
-                    //this.game.state.start('platformer', true, false);
-                }
-
-                if (counter > 0) {
-                    counter--;
-                    timerdisplay2.setText(counter);
-                }
+            if (counter === 0) {
+                // TODO need some logic to go through nexxt screen but keep current selection
+                //video.stop();
+                timerdisplay2.setText(" ");
+                this.game.time.events.remove(chooseloop);
+                counter = 45;
+                timerdisplay2.visible = false;
+                selectie.alpha = 0;
+                kiesspelers.alpha = 0;
+                letsplay.alpha = 0;
+                animationstarted = false;
+                blockInsert = false;
+                gobackx2 = 0;
+                enternumber = false;
+                nogoback.visible = false;
+                blockInsert = false;
+                numbertext.visible = false;
+                ntext.visible = false;
+                enternumberpng.visible = false;
+                //this.game.state.start('platformer', true, false);
             }
-            ,
+
+            if (counter > 0) {
+                counter--;
+                timerdisplay2.setText(counter);
+            }
+        },
         update: function () {
             if (cursors.left.isDown) {
                 //  Move to the left
@@ -325,8 +346,8 @@
                 selectie.x = 550;
                 this.game.multiplay = true;
             }
-        
-        /*canvas.clear();
+
+            /*canvas.clear();
         for (var i = 0; i < max; i++) {
         var perspective = distance / (distance + zz[i]);
         var x = this.game.world.centerX + xx[i] * perspective;
@@ -375,13 +396,13 @@
 */
         },
         onDownNumber: function (key) {
-            
+
             // Only when the state of entering pin is enter allow this input
             if (enternumber === true && inputthisplay.text.length < 5) {
                 gobackx2 = 0;
                 var newNumber;
                 console.log(key.keyCode);
-               
+
                 switch (key.keyCode) {
                     case 96:
                         newNumber = '0'
@@ -419,13 +440,13 @@
                 inputthisplay.anchor.setTo(0.5, 0.5);
                 // 5 character display
                 if (inputthisplay.text.length === 5) {
-                    
+
                     numberentered = true;
                     okplay.alpha = 1;
-                    
+
 
                     // TODO: TODO:  Some logic here please for checking if game can be played
-                     this.getLocalStorage(inputthisplay.text);
+                    this.getLocalStorage(inputthisplay.text);
 
                 } else {
                     numberentered = false;
@@ -439,6 +460,8 @@
             console.log(key.keyCode);
 
             if (key.keyCode === 73 && blockInsert === false && enternumber === false) {
+                inputthisplay.text = '';
+                inputthisplay.visible = true;
                 blockInsert = true;
                 numberentered = false;
                 numberwaste = 0;
@@ -448,7 +471,7 @@
                 //this.kiesspeler();
             }
 
-            if (key.keyCode === 73 && blockInsert === true){
+            if (key.keyCode === 73 && blockInsert === true) {
                 numberwaste++;
                 ntext.text = numberwaste;
             }
@@ -472,33 +495,49 @@
                 //
                 this.handleLocalStorage(inputthisplay.text, numberwaste);
 
+                // This starts the game, so make it an off
+                if (canPlay === true) {
+                    // This starts the game, so make it an off
+                    this.kiesspeler();
+                } else {
+                    // Collect & Exit
+                    // reset all values
+                }
 
 
-                this.kiesspeler();
+
 
             }
 
             // Canelbutton Name
-            if (key.keyCode === 88 && readytoplay === false && enternumber === true) {
-                numberentered = false;
-                okplay.alpha = 0.5;
-                if (inputthisplay.text.length === 0) {
-                    gobackx2++;
-                    console.log('goback');
-                    if (gobackx2 === 2) {
-                        gobackx2 = 0;
-                        enternumber = false;
-                        nogoback.visible = false;
-                        blockInsert = false;
-                        numbertext.visible = false;
-                        ntext.visible = false;
-                        enternumberpng.visible = false;
-                    }
-                }
-                if (inputthisplay.text.length >= 1) {
-                    var newVal = inputthisplay.text.substring(0, inputthisplay.text.length - 1);
-                    inputthisplay.setText(newVal);
-                }
+            if (key.keyCode === 88 && readytoplay === false) {
+                gobackx2 = 0;
+                enternumber = false;
+                nogoback.visible = false;
+                blockInsert = false;
+                numbertext.visible = false;
+                ntext.visible = false;
+                enternumberpng.visible = false;
+                inputthisplay.visible = false;
+                okplay.visible = false;
+                // okplay.alpha = 0.5;
+                // if (inputthisplay.text.length === 0) {
+                //     gobackx2++;
+                //     console.log('goback');
+                //     if (gobackx2 === 2) {
+                //         gobackx2 = 0;
+                //         enternumber = false;
+                //         nogoback.visible = false;
+                //         blockInsert = false;
+                //         numbertext.visible = false;
+                //         ntext.visible = false;
+                //         enternumberpng.visible = false;
+                //     }
+                // }
+                // if (inputthisplay.text.length >= 1) {
+                //     var newVal = inputthisplay.text.substring(0, inputthisplay.text.length - 1);
+                //     inputthisplay.setText(newVal);
+                // }
             }
 
 
@@ -521,7 +560,7 @@
             levelsound.play();
             console.log("comes here");
             kiesspelers.alpha = 1;
-            
+
             kiesspelerstween = this.game.add.tween(kiesspelers).to({
                 y: this.game.height / 2
             }, 1000, Phaser.Easing.Bounce.Out, true);
@@ -577,47 +616,66 @@
         // TODO: TODO: TODO: TODO:
         // TODO: TODO: TODO: TODO:
         // de LOCALSTORAGE FUNCTIES MOETEN GEMERGERD WORDEN
-        getLocalStorage(_studid){
+        getLocalStorage(_studid) {
             userStorage = localStorage.getItem(_studid);
+            // userStorage = parseInt(userStorage);
             userPlays = localStorage.getItem('x' + _studid);
-            if (userStorage === null){
+            userPlays = parseInt(userPlays);
+
+            // for sanity: trace everything
+            console.log('amountofwasteforplay' + amountOfWasteForPlay);
+            console.log('numberofwastethrownin' + numberwaste);
+
+            console.log('userStorage = ' + userStorage);
+            console.log('userPlays = ' + userPlays);
+
+            if (userStorage === null || userStorage === NaN) {
                 console.log('There are no records of this user');
+                // NEXT STEP
+                // IS THE CURRENT AMOUNT OF WASTE ENOUGH TO START A GAME?
+                // Should we make it?
                 // NOTE: User cannot play
                 // TODO: note to user
                 currentPlays = 0;
                 userStorage = numberwaste;
                 currentStudId = _studid;
-                console.log('HEEFT NIETTTT GENOEG PUNTEN, namelijk ' + userStorage + ' nodig is ' + (amountOfWasteForPlay * currentPlays));
+                console.log('HEEFT NIETTTT GENOEG PUNTEN, namelijk ' + userStorage + ' nodig is ' + amountOfWasteForPlay * userPlays);
 
             } else {
                 console.log('User exists');
-                currentPlays = parseInt(userPlays);
-                console.log(currentPlays);
                 // TODO: Check if the user can Play
                 // amountOfwasteForplay = 5
-                if ( userStorage >= (amountOfWasteForPlay * currentPlays)){
+                if (userStorage >= (amountOfWasteForPlay * currentPlays)) {
                     // Should have enough points
-                    console.log('HEEFT GENOEG PUNTEN, namelijk ' + userStorage + ' nodig is ' + (amountOfWasteForPlay * currentPlays));
+                    console.log('HEEFT GENOEG PUNTEN, namelijk ' + userStorage + ' nodig is ' + amountOfWasteForPlay * userPlays);
                 } else {
                     // Not enough points so Should note howmany
-                    console.log('HEEFT GENOEG PUNTEN, namelijk ' + userStorage + ' nodig is ' + (amountOfWasteForPlay * currentPlays));
+                    console.log('HEEFT GENOEG PUNTEN, namelijk ' + userStorage + ' nodig is ' + amountOfWasteForPlay * userPlays);
                 }
             }
 
         },
 
         // local Storage Operator
-        handleLocalStorage(_studid, _numwaste){
+        handleLocalStorage(_studid, _numwaste) {
             lspoints = localStorage.getItem(_studid);
             console.log(lspoints);
             console.log(_studid + ' has ' + lspoints + 'points');
             // Below functionality first checks if there is an existing value in Local storage
             // if so update it, if not create it with 0 value;
-            if (lspoints === null){
+            if (lspoints === null) {
                 // add number of waste
                 lspoints = 0 + _numwaste;
                 console.log('StudID = new to localstorage');
                 console.log(_studid + ' has ' + lspoints + 'points');
+                // NOTE: Important, below has to give 0 or 1, depending on playing or not
+                // TODO: WANT & Can play = + 1
+                if (wantToPlay === true && canPlay === true) {
+                    localStorage.setItem('x' + _studid, 1);
+                } else {
+                    localStorage.setItem('x' + _studid, 0);
+                }
+
                 //make a new entry in the localstorage
             } else {
                 // ls exist, add points
@@ -627,26 +685,17 @@
             }
             // OK, update to localstoage DATABASE
             localStorage.setItem(_studid, lspoints);
-            // have we start a game
-            // TODO: TODO: TODO: TODO: Embed the var to check this if in the function
-            if (lspoints === null) 
-            {
-                // there is no localstorageitem, so store number of plays of user as 0 (x)
-                localStorage.setItem('x' + _studid, 0);
-            }
-            // TODO: Send data to wthe API
+            // NOTE: Send data to wthe API - works fine
             // "http://localhost/greenup/src/api/assignpoints/" + _studid + "/" + lspoints
             this.makeIOTcall("http://ewastearcades.nl/greenup/api/assignpoints/" + _studid + "/" + lspoints);
-            // TODO: Send data to the API
         },
         // fire away the API calls
         makeIOTcall: function (theUrl) {
             var xmlHttp = new XMLHttpRequest();
             xmlHttp.onreadystatechange = function () {
-                if (xmlHttp.readyState === 4 && xmlHttp.status === 200){
+                if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
                     console.log(xmlHttp.responseText);
                 }
-                    
             }
             xmlHttp.open("GET", theUrl, true); // true for asynchronous 
             xmlHttp.send(null);
