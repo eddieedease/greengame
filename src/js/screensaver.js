@@ -79,6 +79,9 @@
     // view war, this is the png
     var enternumberpng;
 
+    // this is the text object that communicates amount of waste needed for player to play a game;
+    var neededForPlay = '';
+
     var levelsound;
     /*
         var distance = 700;
@@ -250,6 +253,10 @@
             inputthisplay = this.game.add.bitmapText(this.game.world.centerX, 200, 'scorefont', 'pin', 70);
             inputthisplay.visible = true;
             inputthisplay.setText("");
+
+            neededForPlay = this.game.add.bitmapText(this.game.world.centerX - 300, 300, 'scorefont', 'pin', 70);
+            neededForPlay.visible = true;
+            neededForPlay.setText("");
 
 
             okplay = this.game.add.image(this.game.width / 8 * 2.5, 420, 'okplay');
@@ -461,7 +468,9 @@
 
             if (key.keyCode === 73 && blockInsert === false && enternumber === false) {
                 inputthisplay.text = '';
+                neededForPlay.text = 'test';
                 inputthisplay.visible = true;
+                neededForPlay.visible = true;
                 blockInsert = true;
                 numberentered = false;
                 numberwaste = 0;
@@ -474,6 +483,12 @@
             if (key.keyCode === 73 && blockInsert === true) {
                 numberwaste++;
                 ntext.text = numberwaste;
+
+                // TODO: check if there is a number entered, and update
+                if (inputthisplay.text.length === 5){
+                    // TODO: Update all values
+                    this.getLocalStorage();
+                }
             }
 
 
@@ -524,6 +539,7 @@
                 ntext.visible = false;
                 enternumberpng.visible = false;
                 inputthisplay.visible = false;
+                neededForPlay.visible = false;
                 okplay.visible = false;
                 // okplay.alpha = 0.5;
                 // if (inputthisplay.text.length === 0) {
@@ -635,7 +651,7 @@
             console.log('userPlays = ' + userPlays);
 
             if (userStorage === null || userStorage === NaN) {
-                console.log('There are no records of this user');
+                console.log('= New user');
                 // NEXT STEP
                 // IS THE CURRENT AMOUNT OF WASTE ENOUGH TO START A GAME?
                 // Should we make it?
@@ -644,8 +660,6 @@
                 currentPlays = 0;
                 userStorage = numberwaste;
                 currentStudId = _studid;
-                
-
                 // NOTE:
                 // is the current amount of waste enough to start a game?
                 if (numberwaste >= amountOfWasteForPlay){
@@ -655,12 +669,12 @@
                 } else {
                     // Cannot Play
                     console.log('HEEFT NIET GENOEG PUNTEN, namelijk ' + userStorage + ' nodig is ' + amountOfWasteForPlay);
-
                     canPlay = false;
+                    // TODO: Calculate how much left
                 }
 
             } else {
-                console.log('User exists');
+                console.log('= User exists');
                 // but can it play?
                 // TODO: Check if the user can Play
                 // amountOfwasteForplay = 5
@@ -672,11 +686,13 @@
                     // Not enough points so Should note howmany
                     console.log('Not enough points ' + userStorage + ' we need at least ' + amountOfWasteForPlay * userPlays + 1);
                     canPlay = false;
+                    // TODO: Calculate how much left
+
                 }  
             }
+            // TODO: TODO: Communicate to the player if canplay/cannotplay & how mucht point left needed
 
         },
-
         // local Storage Operator
         handleLocalStorage(_studid, _numwaste) {
             lspoints = localStorage.getItem(_studid);
