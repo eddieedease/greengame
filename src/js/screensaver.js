@@ -445,7 +445,7 @@
                     okplay.alpha = 1;
 
 
-                    // TODO: TODO:  Some logic here please for checking if game can be played
+                    // TODO:
                     this.getLocalStorage(inputthisplay.text);
 
                 } else {
@@ -481,7 +481,14 @@
 
             // if readytoplay false en number is ready to be entered
             if (key.keyCode === 90 && readytoplay === false && numberentered === true) {
-                // Here we should catch the accept and cancel buttons
+               
+
+                // This starts 
+                // first of, let's check if this is possible
+                // TODO: Implement further
+                if (canPlay === true) {
+
+                     // Here we should catch the accept and cancel buttons
                 numberentered = false;
                 nogoback.visible = false;
                 numbertext.visible = false;
@@ -494,14 +501,12 @@
                 console.log('Amount of waste = ' + numberwaste);
                 //
                 this.handleLocalStorage(inputthisplay.text, numberwaste);
-
-                // This starts the game, so make it an off
-                if (canPlay === true) {
                     // This starts the game, so make it an off
                     this.kiesspeler();
                 } else {
                     // Collect & Exit
                     // reset all values
+                    // TODO: Note user that canPlay is not met
                 }
 
 
@@ -639,19 +644,35 @@
                 currentPlays = 0;
                 userStorage = numberwaste;
                 currentStudId = _studid;
-                console.log('HEEFT NIETTTT GENOEG PUNTEN, namelijk ' + userStorage + ' nodig is ' + amountOfWasteForPlay * userPlays);
+                
+
+                // NOTE:
+                // is the current amount of waste enough to start a game?
+                if (numberwaste >= amountOfWasteForPlay){
+                    // Can play
+                    canPlay = true;
+                    console.log('HEEFT GENOEG PUNTEN, namelijk ' + userStorage + ' nodig is ' + amountOfWasteForPlay);
+                } else {
+                    // Cannot Play
+                    console.log('HEEFT NIET GENOEG PUNTEN, namelijk ' + userStorage + ' nodig is ' + amountOfWasteForPlay);
+
+                    canPlay = false;
+                }
 
             } else {
                 console.log('User exists');
+                // but can it play?
                 // TODO: Check if the user can Play
                 // amountOfwasteForplay = 5
-                if (userStorage >= (amountOfWasteForPlay * currentPlays)) {
+                if (userStorage >= (amountOfWasteForPlay * currentPlays + 1)) {
                     // Should have enough points
-                    console.log('HEEFT GENOEG PUNTEN, namelijk ' + userStorage + ' nodig is ' + amountOfWasteForPlay * userPlays);
-                } else {
+                    console.log('Enough points! ' + userStorage + ' need is ' + amountOfWasteForPlay * userPlays + 1);
+                    canPlay = true;
+                } else { 
                     // Not enough points so Should note howmany
-                    console.log('HEEFT GENOEG PUNTEN, namelijk ' + userStorage + ' nodig is ' + amountOfWasteForPlay * userPlays);
-                }
+                    console.log('Not enough points ' + userStorage + ' we need at least ' + amountOfWasteForPlay * userPlays + 1);
+                    canPlay = false;
+                }  
             }
 
         },
@@ -660,7 +681,7 @@
         handleLocalStorage(_studid, _numwaste) {
             lspoints = localStorage.getItem(_studid);
             console.log(lspoints);
-            console.log(_studid + ' has ' + lspoints + 'points');
+            console.log(_studid + ' has ' + lspoints + 'points') ;
             // Below functionality first checks if there is an existing value in Local storage
             // if so update it, if not create it with 0 value;
             if (lspoints === null) {
