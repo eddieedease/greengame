@@ -119,8 +119,6 @@
 
     // Logic varsfor making API magic work
     var currentStudId;
-    var numberofwaste;
-    var currentPlays;
 
 
     // NOTE: Important, how much is the treshold of playing?
@@ -164,15 +162,17 @@
             sprite.x = 0;
             sprite.y = 0;
 
-
+ // The delete button on numpad
             this.game.input.keyboard.onDownCallback = function (e) {
 
-                // The delete button on numpad
+               
                 if (e.keyCode === 110 && readytoplay === false && enternumber === true) {
                     numberentered = false;
                     okplay.alpha = 0.5;
 
                     if (inputthisplay.text.length >= 1) {
+                        neededForPlay.text = '';
+                        canPlay = false;
                         var newVal = inputthisplay.text.substring(0, inputthisplay.text.length - 1);
                         inputthisplay.setText(newVal);
                     }
@@ -254,7 +254,8 @@
             inputthisplay.visible = true;
             inputthisplay.setText("");
 
-            neededForPlay = this.game.add.bitmapText(this.game.world.centerX - 300, 300, 'scorefont', 'pin', 70);
+            neededForPlay = this.game.add.bitmapText(this.game.world.centerX , this.game.world.centerY, 'scorefont', 'pin', 20);
+            neededForPlay.anchor.setTo(0.5, 0.5);
             neededForPlay.visible = true;
             neededForPlay.setText("");
 
@@ -449,7 +450,7 @@
                 if (inputthisplay.text.length === 5) {
 
                     numberentered = true;
-                    okplay.alpha = 1;
+                    // okplay.alpha = 1;
 
 
                     // TODO:
@@ -468,9 +469,11 @@
 
             if (key.keyCode === 73 && blockInsert === false && enternumber === false) {
                 inputthisplay.text = '';
-                neededForPlay.text = 'test';
+                
                 inputthisplay.visible = true;
                 neededForPlay.visible = true;
+
+                neededForPlay.text = '';
                 blockInsert = true;
                 numberentered = false;
                 numberwaste = 0;
@@ -483,11 +486,10 @@
             if (key.keyCode === 73 && blockInsert === true) {
                 numberwaste++;
                 ntext.text = numberwaste;
-
-                // TODO: check if there is a number entered, and update
-                if (inputthisplay.text.length === 5){
-                    // TODO: Update all values
-                    this.getLocalStorage();
+                // is there a number entered? If so calculate new remain
+                // TODO: above
+                if (numberentered){
+                    console.log("needtoupdate");
                 }
             }
 
@@ -515,13 +517,13 @@
                 console.log('StudID = ' + inputthisplay.text);
                 console.log('Amount of waste = ' + numberwaste);
                 //
+                userPlays++;
                 this.handleLocalStorage(inputthisplay.text, numberwaste);
                     // This starts the game, so make it an off
                     this.kiesspeler();
+                    neededForPlay.visible = false;
                 } else {
-                    // Collect & Exit
-                    // reset all values
-                    // TODO: Note user that canPlay is not met
+                   // Do nothing, wait till canPlay will be triggered
                 }
 
 
@@ -531,6 +533,12 @@
 
             // Canelbutton Name
             if (key.keyCode === 88 && readytoplay === false) {
+                console.log('here');
+                // TODO: check if there is a number entered, and update
+                if (inputthisplay.text.length === 5){
+                    // TODO: Update all values, without play
+                    this.handleLocalStorage(inputthisplay.text, numberwaste);
+                }
                 gobackx2 = 0;
                 enternumber = false;
                 nogoback.visible = false;
@@ -541,24 +549,10 @@
                 inputthisplay.visible = false;
                 neededForPlay.visible = false;
                 okplay.visible = false;
-                // okplay.alpha = 0.5;
-                // if (inputthisplay.text.length === 0) {
-                //     gobackx2++;
-                //     console.log('goback');
-                //     if (gobackx2 === 2) {
-                //         gobackx2 = 0;
-                //         enternumber = false;
-                //         nogoback.visible = false;
-                //         blockInsert = false;
-                //         numbertext.visible = false;
-                //         ntext.visible = false;
-                //         enternumberpng.visible = false;
-                //     }
-                // }
-                // if (inputthisplay.text.length >= 1) {
-                //     var newVal = inputthisplay.text.substring(0, inputthisplay.text.length - 1);
-                //     inputthisplay.setText(newVal);
-                // }
+                
+                
+                // Check if there is a number entered
+
             }
 
 
@@ -657,7 +651,8 @@
                 // Should we make it?
                 // NOTE: User cannot play
                 // TODO: note to user
-                currentPlays = 0;
+                var remain;
+                userPlays = 0;
                 userStorage = numberwaste;
                 currentStudId = _studid;
                 // NOTE:
@@ -666,65 +661,50 @@
                     // Can play
                     canPlay = true;
                     console.log('HEEFT GENOEG PUNTEN, namelijk ' + userStorage + ' nodig is ' + amountOfWasteForPlay);
+                    neededForPlay.text = 'Je kunt spelen!'
+                    okplay.alpha = 1;
                 } else {
                     // Cannot Play
                     console.log('HEEFT NIET GENOEG PUNTEN, namelijk ' + userStorage + ' nodig is ' + amountOfWasteForPlay);
                     canPlay = false;
-                    // TODO: Calculate how much left
+                    remain = (amountOfWasteForPlay * (userPlays + 1)) - userStorage;
+                    neededForPlay.text = 'Gooi nog ' + remain + ' afval in om te spelen';
+                    okplay.alpha = 0.5;
                 }
 
             } else {
                 console.log('= User exists');
                 // but can it play?
-                // TODO: Check if the user can Play
-                // amountOfwasteForplay = 5
-                if (userStorage >= (amountOfWasteForPlay * currentPlays + 1)) {
+                if (userStorage >= (amountOfWasteForPlay * (userPlays + 1))) {
                     // Should have enough points
-                    console.log('Enough points! ' + userStorage + ' need is ' + amountOfWasteForPlay * userPlays + 1);
+                    console.log('Enough points! ' + userStorage + ' need is ' + (amountOfWasteForPlay * (userPlays + 1)));
                     canPlay = true;
+                    neededForPlay.text = 'Je kunt spelen!';
+                    okplay.alpha = 1;
                 } else { 
                     // Not enough points so Should note howmany
-                    console.log('Not enough points ' + userStorage + ' we need at least ' + amountOfWasteForPlay * userPlays + 1);
+                    console.log('Not enough points ' + userStorage + ' we need at least ' + (amountOfWasteForPlay * (userPlays + 1)));
                     canPlay = false;
-                    // TODO: Calculate how much left
-
+                    // TODO: Calculate how much left is needed
+                    remain = (amountOfWasteForPlay * (userPlays + 1)) - userStorage;
+                    neededForPlay.text = 'Gooi nog ' + remain + ' afval in om te spelen';
+                    okplay.alpha = 0.5;
                 }  
             }
-            // TODO: TODO: Communicate to the player if canplay/cannotplay & how mucht point left needed
+
 
         },
         // local Storage Operator
         handleLocalStorage(_studid, _numwaste) {
-            lspoints = localStorage.getItem(_studid);
-            console.log(lspoints);
-            console.log(_studid + ' has ' + lspoints + 'points') ;
-            // Below functionality first checks if there is an existing value in Local storage
-            // if so update it, if not create it with 0 value;
-            if (lspoints === null) {
-                // add number of waste
-                lspoints = 0 + _numwaste;
-                console.log('StudID = new to localstorage');
-                console.log(_studid + ' has ' + lspoints + 'points');
-                // NOTE: Important, below has to give 0 or 1, depending on playing or not
-                // TODO: WANT & Can play = + 1
-                if (wantToPlay === true && canPlay === true) {
-                    localStorage.setItem('x' + _studid, 1);
-                } else {
-                    localStorage.setItem('x' + _studid, 0);
-                }
 
-                //make a new entry in the localstorage
-            } else {
-                // ls exist, add points
-                lspoints = parseInt(lspoints) + _numwaste;
-                console.log('StudID Exist!');
-                console.log(_studid + ' has ' + lspoints + 'points');
-            }
-            // OK, update to localstoage DATABASE
-            localStorage.setItem(_studid, lspoints);
+            var newNumb = parseInt(userStorage) + parseInt(numberwaste);
+            localStorage.setItem(_studid, newNumb);
+            localStorage.setItem('x' + _studid, userPlays);
             // NOTE: Send data to wthe API - works fine
             // "http://localhost/greenup/src/api/assignpoints/" + _studid + "/" + lspoints
-            this.makeIOTcall("http://ewastearcades.nl/greenup/api/assignpoints/" + _studid + "/" + lspoints);
+            // "https://ewastearcades.nl/greenup/api/assignpoints/"
+            
+            this.makeIOTcall("http://localhost/greenup/src/api/assignpoints/" + _studid + "/" + newNumb);
         },
         // fire away the API calls
         makeIOTcall: function (theUrl) {
