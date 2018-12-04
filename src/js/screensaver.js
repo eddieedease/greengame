@@ -743,8 +743,8 @@
             // NOTE: Send data to wthe API - works fine
             // "http://localhost/greenup/src/api/assignpoints/" + _studid + "/" + lspoints
             // "https://ewastearcades.nl/greenup/api/assignpoints/"
-            
-            this.makeIOTcall("http://localhost/greenup/src/api/assignpoints/" + _studid + "/" + newNumb);
+            // TODO: Below doesn't work
+            this.makeIOTcall("http://localhost/greenup/src/api/assignpoints/" + _studid + "/" + newNumb + "/" + numberwaste);
         },
         // fire away the API calls
         makeIOTcall: function (theUrl) {
