@@ -26,6 +26,9 @@
             this.load.image('stopbord', 'assets/stopbord.png');
             this.load.image('perron', 'assets/perron.png');
 
+            this.load.image('max', 'assets/max.png');
+            this.load.image('exit', 'assets/exit.png');
+
             this.load.image('okplay', 'assets/okplay.png');
             this.load.image('nogoback', 'assets/backupbackup.png');
 
@@ -87,8 +90,6 @@
             this.load.image('platformground', 'assets/platformground.png');
 
             this.load.image('train', 'assets/train.png');
-
-
             this.load.image('p1life', 'assets/p1life.png');
             this.load.image('p2life', 'assets/p2life.png');
 

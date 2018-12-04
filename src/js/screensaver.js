@@ -141,7 +141,10 @@
     // button help images throw in screen
     var okplay;
     var nogoback;
-    var gobackx2 = 0;
+
+    var exit;
+    var max;
+    var gobackx2 = 0;           
 
     Screensaver.prototype = {
         create: function () {
@@ -169,7 +172,8 @@
                 if (e.keyCode === 110 && readytoplay === false && enternumber === true) {
                     numberentered = false;
                     okplay.alpha = 0.5;
-
+                    nogoback.visible = false;
+                    exit.visible = true;
                     if (inputthisplay.text.length >= 1) {
                         neededForPlay.text = '';
                         canPlay = false;
@@ -250,11 +254,11 @@
             timerdisplay2.visible = true;
             timerdisplay2.setText(" ");
 
-            inputthisplay = this.game.add.bitmapText(this.game.world.centerX, 200, 'scorefont', 'pin', 70);
+            inputthisplay = this.game.add.bitmapText(this.game.world.centerX, 110, 'scorefont', 'pin', 70);
             inputthisplay.visible = true;
             inputthisplay.setText("");
 
-            neededForPlay = this.game.add.bitmapText(this.game.world.centerX , this.game.world.centerY, 'scorefont', 'pin', 20);
+            neededForPlay = this.game.add.bitmapText(this.game.world.centerX , this.game.world.centerY + 70 , 'scorefont', 'pin', 20);
             neededForPlay.anchor.setTo(0.5, 0.5);
             neededForPlay.visible = true;
             neededForPlay.setText("");
@@ -268,8 +272,16 @@
             nogoback.anchor.setTo(0.5, 0.5);
             nogoback.visible = false;
 
-            numbertext = this.game.add.bitmapText(this.game.world.centerX, 320, 'scorefont', 'aantal afval:', 20);
-            ntext = this.game.add.bitmapText(this.game.world.centerX, 380, 'scorefont', '', 50);
+            exit = this.game.add.image(this.game.width / 8 * 5.5, 420, 'exit');
+            exit.anchor.setTo(0.5, 0.5);
+            exit.visible = false;
+
+            max = this.game.add.image(this.game.width / 2, 300, 'max');
+            max.anchor.setTo(0.5, 0.5);
+            max.visible = false;
+
+            numbertext = this.game.add.bitmapText(this.game.world.centerX, 180, 'scorefont', 'aantal afval ingegooid:', 20);
+            ntext = this.game.add.bitmapText(this.game.world.centerX, 260, 'scorefont', '', 50);
             numbertext.anchor.setTo(0.5, 0.5);
             numbertext.visible = false;
             ntext.anchor.setTo(0.5, 0.5);
@@ -279,6 +291,8 @@
             warning = this.game.add.image(this.game.width / 8 * 4, 300, 'warning');
             warning.anchor.set(0.5, 0.5);
             warning.visible = false;
+
+            
         },
         resetLocalStorage: function () {
             console.log('check');
@@ -329,6 +343,7 @@
                 gobackx2 = 0;
                 enternumber = false;
                 nogoback.visible = false;
+                max.visible = false;
                 blockInsert = false;
                 numbertext.visible = false;
                 ntext.visible = false;
@@ -451,12 +466,15 @@
 
                     numberentered = true;
                     // okplay.alpha = 1;
-
+                    nogoback.visible = true;
+                    exit.visible = false;
 
                     // TODO:
                     this.getLocalStorage(inputthisplay.text);
 
                 } else {
+                    nogoback.visible = false;
+                    exit.visible = true;
                     numberentered = false;
                     okplay.alpha = 0.5;
                 }
@@ -484,13 +502,29 @@
             }
 
             if (key.keyCode === 73 && blockInsert === true) {
-                numberwaste++;
-                ntext.text = numberwaste;
-                // is there a number entered? If so calculate new remain
-                // TODO: above
-                if (numberentered){
-                    console.log("needtoupdate");
+                max.visible = false;
+                // Number of waste may not be more than 5, if it is.... 
+                
+                if (numberwaste === 5){
+                    // MAX reached
+                    // TODO: Communicate limit = reached
+                    max.visible = true;
+                } else {
+                    // MAX is not reached, add up
+                    numberwaste++;
+                    ntext.text = numberwaste;
+                    // is there a number entered? If so calculate new remain
+                    // TODO: above
+                    if (numberentered){
+                        console.log("needtoupdate");
+                        this.getLocalStorage(inputthisplay.text);
+                    }
                 }
+                
+                
+                
+
+
             }
 
 
@@ -508,6 +542,7 @@
                      // Here we should catch the accept and cancel buttons
                 numberentered = false;
                 nogoback.visible = false;
+                max.visible = false;
                 numbertext.visible = false;
                 okplay.visible = false;
                 ntext.visible = false;
@@ -536,12 +571,16 @@
                 console.log('here');
                 // TODO: check if there is a number entered, and update
                 if (inputthisplay.text.length === 5){
+                    nogoback.visible = true;
+                    exit.visible = false;
                     // TODO: Update all values, without play
                     this.handleLocalStorage(inputthisplay.text, numberwaste);
                 }
                 gobackx2 = 0;
                 enternumber = false;
                 nogoback.visible = false;
+                exit.visible = false;
+                max.visible = false;
                 blockInsert = false;
                 numbertext.visible = false;
                 ntext.visible = false;
@@ -622,7 +661,8 @@
         inputtweendone: function () {
             console.log('comes here');
             enternumber = true;
-            nogoback.visible = true;
+            nogoback.visible = false;
+            exit.visible = true;
             okplay.visible = true;
             numbertext.visible = true;
             ntext.visible = true;
