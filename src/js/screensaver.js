@@ -253,7 +253,7 @@
             timerdisplay2.visible = true;
             timerdisplay2.setText(" ");
 
-            inputthisplay = this.game.add.bitmapText(this.game.world.centerX + 20 , 190, 'scorefont', 'pin', 70);
+            inputthisplay = this.game.add.bitmapText(this.game.world.centerX + 30 , 190, 'scorefont', 'pin', 70);
             inputthisplay.visible = true;
             inputthisplay.setText("");
 
@@ -280,7 +280,7 @@
             max.visible = false;
 
             numbertext = this.game.add.bitmapText(this.game.world.centerX, 180, 'scorefont', '', 20);
-            ntext = this.game.add.bitmapText(this.game.world.centerX, 340, 'scorefont', '', 50);
+            ntext = this.game.add.bitmapText(this.game.world.centerX, 340, 'scorefont', '', 80);
             numbertext.anchor.setTo(0.5, 0.5);
             numbertext.visible = false;
             ntext.anchor.setTo(0.5, 0.5);
@@ -714,18 +714,18 @@
             } else {
                 console.log('= User exists');
                 // but can it play?
-                if (userStorage >= (amountOfWasteForPlay * (userPlays + 1))) {
+                if (+userStorage + numberwaste >= (amountOfWasteForPlay * (userPlays + 1))) {
                     // Should have enough points
-                    console.log('Enough points! ' + userStorage + ' need is ' + (amountOfWasteForPlay * (userPlays + 1)));
+                    console.log('Enough points! ' + (+userStorage + numberwaste) + ' need is ' + (amountOfWasteForPlay * (userPlays + 1)));
                     canPlay = true;
                     neededForPlay.text = 'Je kunt spelen!';
                     okplay.alpha = 1;
                 } else { 
                     // Not enough points so Should note howmany
-                    console.log('Not enough points ' + userStorage + ' we need at least ' + (amountOfWasteForPlay * (userPlays + 1)));
+                    console.log('Not enough points ' + (+userStorage + numberwaste) + ' we need at least ' + (amountOfWasteForPlay * (userPlays + 1)));
                     canPlay = false;
                     // TODO: Calculate how much left is needed
-                    remain = ((amountOfWasteForPlay * (userPlays + 1)) - (+userStorage + numberwaste));
+                    remain = (amountOfWasteForPlay * (userPlays + 1)) - ((+userStorage + numberwaste));
                     neededForPlay.text = 'Gooi nog ' + remain + '\nafval in \nom te spelen';
                     okplay.alpha = 0.5;
                 }  
@@ -743,7 +743,7 @@
             // "http://localhost/greenup/src/api/assignpoints/" + _studid + "/" + lspoints
             // "https://ewastearcades.nl/greenup/api/assignpoints/"
             // TODO: Below doesn't work
-            this.makeIOTcall("http://localhost/greenup/src/api/assignpoints/" + _studid + "/" + newNumb + "/" + numberwaste);
+            this.makeIOTcall("https://ewastearcades.nl/greenup/api/assignpoints/" + _studid + "/" + newNumb + "/" + numberwaste);
         },
         // fire away the API calls
         makeIOTcall: function (theUrl) {
