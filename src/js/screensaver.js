@@ -198,7 +198,6 @@
             enternumberpng = this.game.add.sprite(this.game.width / 2, this.game.height / 2, 'enternumber');
             enternumberpng.anchor.setTo(0.5, 0.5);
             enternumberpng.alpha = 0;
-
             letsplay = this.game.add.sprite(this.game.width / 2, this.game.height / 2, 'letsplay');
             letsplay.anchor.setTo(0.5, 0.5);
             letsplay.alpha = 0;
@@ -254,25 +253,25 @@
             timerdisplay2.visible = true;
             timerdisplay2.setText(" ");
 
-            inputthisplay = this.game.add.bitmapText(this.game.world.centerX, 110, 'scorefont', 'pin', 70);
+            inputthisplay = this.game.add.bitmapText(this.game.world.centerX + 20 , 190, 'scorefont', 'pin', 70);
             inputthisplay.visible = true;
             inputthisplay.setText("");
 
-            neededForPlay = this.game.add.bitmapText(this.game.world.centerX , this.game.world.centerY + 70 , 'scorefont', 'pin', 20);
+            neededForPlay = this.game.add.bitmapText(this.game.world.centerX + 200 , this.game.world.centerY + 48 , 'scorefont', 'pin', 28);
             neededForPlay.anchor.setTo(0.5, 0.5);
             neededForPlay.visible = true;
             neededForPlay.setText("");
 
 
-            okplay = this.game.add.image(this.game.width / 8 * 2.5, 420, 'okplay');
+            okplay = this.game.add.image(this.game.width / 8 * 4.2, 500, 'okplay');
             okplay.anchor.setTo(0.5, 0.5);
             okplay.alpha = 0.5;
             okplay.visible = false;
-            nogoback = this.game.add.image(this.game.width / 8 * 5.5, 420, 'nogoback');
+            nogoback = this.game.add.image(this.game.width / 8 * 6, 500, 'nogoback');
             nogoback.anchor.setTo(0.5, 0.5);
             nogoback.visible = false;
 
-            exit = this.game.add.image(this.game.width / 8 * 5.5, 420, 'exit');
+            exit = this.game.add.image(this.game.width / 8 * 6, 500, 'exit');
             exit.anchor.setTo(0.5, 0.5);
             exit.visible = false;
 
@@ -280,8 +279,8 @@
             max.anchor.setTo(0.5, 0.5);
             max.visible = false;
 
-            numbertext = this.game.add.bitmapText(this.game.world.centerX, 180, 'scorefont', 'aantal afval ingegooid:', 20);
-            ntext = this.game.add.bitmapText(this.game.world.centerX, 260, 'scorefont', '', 50);
+            numbertext = this.game.add.bitmapText(this.game.world.centerX, 180, 'scorefont', '', 20);
+            ntext = this.game.add.bitmapText(this.game.world.centerX, 340, 'scorefont', '', 50);
             numbertext.anchor.setTo(0.5, 0.5);
             numbertext.visible = false;
             ntext.anchor.setTo(0.5, 0.5);
@@ -708,7 +707,7 @@
                     console.log('HEEFT NIET GENOEG PUNTEN, namelijk ' + userStorage + ' nodig is ' + amountOfWasteForPlay);
                     canPlay = false;
                     remain = (amountOfWasteForPlay * (userPlays + 1)) - userStorage;
-                    neededForPlay.text = 'Gooi nog ' + remain + ' afval in om te spelen';
+                    neededForPlay.text = 'Gooi nog ' + remain + '\nafval in \nom te spelen';
                     okplay.alpha = 0.5;
                 }
 
@@ -726,8 +725,8 @@
                     console.log('Not enough points ' + userStorage + ' we need at least ' + (amountOfWasteForPlay * (userPlays + 1)));
                     canPlay = false;
                     // TODO: Calculate how much left is needed
-                    remain = (amountOfWasteForPlay * (userPlays + 1)) - userStorage;
-                    neededForPlay.text = 'Gooi nog ' + remain + ' afval in om te spelen';
+                    remain = ((amountOfWasteForPlay * (userPlays + 1)) - (+userStorage + numberwaste));
+                    neededForPlay.text = 'Gooi nog ' + remain + '\nafval in \nom te spelen';
                     okplay.alpha = 0.5;
                 }  
             }
