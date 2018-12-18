@@ -69,6 +69,8 @@
             this.load.spritesheet('crp1', 'assets/capred.png', 147, 147);
             this.load.spritesheet('crp2', 'assets/capblue.png', 147, 147);
 
+            this.load.spritesheet('keypad', 'assets/keypad.png', 100, 100);
+
             this.load.image('backbutton', 'assets/backbutton.png');
             //Films
             this.game.load.video('introfilm', 'assets/films/test.mp4');

@@ -144,7 +144,10 @@
 
     var exit;
     var max;
-    var gobackx2 = 0;           
+    var gobackx2 = 0;   
+    
+    var keypad;
+    var keypadanim;
 
     Screensaver.prototype = {
         create: function () {
@@ -286,6 +289,24 @@
             ntext.anchor.setTo(0.5, 0.5);
             ntext.visible = false;
 
+            keypad = this.game.add.sprite(680, 100, 'keypad');
+
+            //  Here we add a new animation called 'walk'
+            //  Because we didn't give any other parameters it's going to make an animation from all available frames in the 'mummy' sprite sheet
+            var walk = keypad.animations.add('walk');
+        
+            //  And this starts the animation playing by using its key ("walk")
+            //  30 is the frame rate (30fps)
+            //  true means it will loop when it finishes
+            keypad.animations.play('walk', 1, true);
+
+            keypad.visible = false;
+        
+            //  Here we add a new animation called 'walk'
+            
+
+
+
             // WARNING IMG
             warning = this.game.add.image(this.game.width / 8 * 4, 300, 'warning');
             warning.anchor.set(0.5, 0.5);
@@ -331,6 +352,7 @@
                 // TODO need some logic to go through nexxt screen but keep current selection
                 //video.stop();
                 timerdisplay2.setText(" ");
+                keypad.visible = false;
                 this.game.time.events.remove(chooseloop);
                 counter = 45;
                 timerdisplay2.visible = false;
@@ -486,7 +508,7 @@
 
             if (key.keyCode === 73 && blockInsert === false && enternumber === false) {
                 inputthisplay.text = '';
-                
+                keypad.visible = true;
                 inputthisplay.visible = true;
                 neededForPlay.visible = true;
 
@@ -542,6 +564,7 @@
                 numberentered = false;
                 nogoback.visible = false;
                 max.visible = false;
+                keypad.visible = false;
                 numbertext.visible = false;
                 okplay.visible = false;
                 ntext.visible = false;
@@ -582,6 +605,7 @@
                 max.visible = false;
                 blockInsert = false;
                 numbertext.visible = false;
+                keypad.visible = false;
                 ntext.visible = false;
                 enternumberpng.visible = false;
                 inputthisplay.visible = false;
@@ -742,7 +766,7 @@
             // NOTE: Send data to wthe API - works fine
             // "http://localhost/greenup/src/api/assignpoints/" + _studid + "/" + lspoints
             // "https://ewastearcades.nl/greenup/api/assignpoints/"
-            // TODO: Below doesn't work
+            // TODO: Below works
             this.makeIOTcall("https://ewastearcades.nl/greenup/api/assignpoints/" + _studid + "/" + newNumb + "/" + numberwaste);
         },
         // fire away the API calls
