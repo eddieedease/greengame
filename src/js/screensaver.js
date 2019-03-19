@@ -108,7 +108,11 @@
     var timerdisplay2
     var counter = 45;
 
+    var timerdisplay3;
+
     var chooseloop;
+    var chooseloop3;
+
 
     // local storage warning img
     var warning;
@@ -167,11 +171,8 @@
             sprite = video.addToWorld(0, 0, 0, 0);
             sprite.x = 0;
             sprite.y = 0;
-
  // The delete button on numpad
             this.game.input.keyboard.onDownCallback = function (e) {
-
-               
                 if (e.keyCode === 110 && readytoplay === false && enternumber === true) {
                     numberentered = false;
                     okplay.alpha = 0.5;
@@ -255,6 +256,11 @@
             timerdisplay2.anchor.setTo(0.5, 0.5);
             timerdisplay2.visible = true;
             timerdisplay2.setText(" ");
+
+            timerdisplay3 = this.game.add.bitmapText(this.game.world.centerX + 6, 40, 'scorefont', 'testtimer', 45);
+            timerdisplay3.anchor.setTo(0.5, 0.5);
+            timerdisplay3.visible = true;
+            timerdisplay3.setText(" ");
 
             inputthisplay = this.game.add.bitmapText(this.game.world.centerX + 30 , 190, 'scorefont', 'pin', 70);
             inputthisplay.visible = true;
@@ -375,6 +381,36 @@
             if (counter > 0) {
                 counter--;
                 timerdisplay2.setText(counter);
+            }
+        },
+        timerLoop3: function () {
+            if (counter === 0) {
+                // TODO need some logic to go through nexxt screen but keep current selection
+                //video.stop();
+                timerdisplay3.setText(" ");
+                keypad.visible = false;
+                this.game.time.events.remove(chooseloop3);
+                counter = 45;
+                timerdisplay2.visible = false;
+                selectie.alpha = 0;
+                kiesspelers.alpha = 0;
+                letsplay.alpha = 0;
+                animationstarted = false;
+                blockInsert = false;
+                gobackx2 = 0;
+                enternumber = false;
+                nogoback.visible = false;
+                max.visible = false;
+                blockInsert = false;
+                numbertext.visible = false;
+                ntext.visible = false;
+                enternumberpng.visible = false;
+                //this.game.state.start('platformer', true, false);
+            }
+
+            if (counter > 0) {
+                counter--;
+                timerdisplay3.setText(counter);
             }
         },
         update: function () {
@@ -622,6 +658,7 @@
             if (key.keyCode === 90 && readytoplay === true) {
                 video.stop();
                 this.game.time.events.remove(chooseloop);
+                this.game.time.events.remove(chooseloop3);
                 blockInsert = false;
                 currentStudId = "";
                 numberwaste = 0;
@@ -643,6 +680,7 @@
             }, 1000, Phaser.Easing.Bounce.Out, true);
 
             kiesspelerstween.onComplete.add(this.kiesspelersdone, this);
+            counter = 45;
             chooseloop = this.game.time.events.loop(Phaser.Timer.SECOND, this.timerLoop, this);
         },
         kiesspelersdone: function () {
@@ -670,7 +708,11 @@
             }
         },
         insertNumber: function () {
+            // disable numberentererd
+            numberentered = false;
             if (animationstarted2 === false) {
+                counter = 45;
+                chooseloop3 = this.game.time.events.loop(Phaser.Timer.SECOND, this.timerLoop3, this);
                 animationstarted2 = false;
                 enternumberpng.visible = true;
                 this.game.stage.backgroundColor = "#fff";
