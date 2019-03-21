@@ -266,7 +266,7 @@
             inputthisplay.visible = true;
             inputthisplay.setText("");
 
-            neededForPlay = this.game.add.bitmapText(this.game.world.centerX + 200, this.game.world.centerY + 48, 'scorefont', 'pin', 28);
+            neededForPlay = this.game.add.bitmapText(this.game.world.centerX + 200, this.game.world.centerY + 70, 'scorefont', 'pin', 34);
             neededForPlay.anchor.setTo(0.5, 0.5);
             neededForPlay.visible = true;
             neededForPlay.setText("");
@@ -633,10 +633,11 @@
                 if (inputthisplay.text.length === 5) {
                     nogoback.visible = true;
                     exit.visible = false;
+                    console.log('NUMBERWASTE OF PERSON = ' + numberwaste);
                     this.handleLocalStorage(inputthisplay.text, numberwaste);
+                    console.log('NUMBERWASTE OF PERSON = ' + numberwaste);
                 }
-                timerdisplay3.setText(" ");
-                this.game.time.events.remove(chooseloop3);
+                numberwaste = 0;
                 gobackx2 = 0;
                 enternumber = false;
                 nogoback.visible = false;
@@ -734,8 +735,6 @@
             ntext.visible = true;
             enternumberpng.visible = true;
         },
-        // TODO: TODO: TODO: TODO:
-        // TODO: TODO: TODO: TODO:
         // de LOCALSTORAGE FUNCTIES MOETEN GEMERGERD WORDEN
         getLocalStorage(_studid) {
             userStorage = localStorage.getItem(_studid);
@@ -793,7 +792,7 @@
                     canPlay = false;
                     // TODO: Calculate how much left is needed
                     remain = (amountOfWasteForPlay * (userPlays + 1)) - ((+userStorage + numberwaste));
-                    neededForPlay.text = 'Gooi nog ' + remain + '\nafval in \nom te spelen';
+                    neededForPlay.text = 'Gooi nog ' + remain + '\nafval items in \nom te spelen';
                     okplay.alpha = 0.5;
                 }
             }
@@ -802,8 +801,19 @@
         },
         // local Storage Operator
         handleLocalStorage(_studid, _numwaste) {
+            var newNumb;
+            // catch the first one
 
-            var newNumb = parseInt(userStorage) + parseInt(numberwaste);
+            if (userStorage === 1) {
+                newNumb = 1;
+            } else {
+                newNumb = +userStorage + numberwaste;
+
+            }
+
+            console.log(userStorage);
+
+
             localStorage.setItem(_studid, newNumb);
             localStorage.setItem('x' + _studid, userPlays);
             // NOTE: Send data to wthe API - works fine
