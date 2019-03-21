@@ -13,6 +13,8 @@
             this.load.setPreloadSprite(this.asset);
             // load audio files first..
 
+            this.load.image('processingAfval', 'assets/busy.png');
+            this.load.image('handError', 'assets/handError.png');
             // new assets
             this.load.image('gameoverr', 'assets/gameoverr.png');
             this.load.image('pakop', 'assets/pakop.png');
@@ -83,12 +85,14 @@
 
            
             this.load.image('gameover', 'assets/gameover.png');
-            this.load.spritesheet('enemy', 'assets/enemy.png', 50, 96);
+            this.load.spritesheet('enemy', 'assets/enemy.png', 99, 102);
             this.load.spritesheet('coin', 'assets/coin.png', 50, 50);
+            this.load.spritesheet('fly', 'assets/fly.png');
 
             //platformer
             this.load.image('sky', 'assets/sky.png');
             this.load.image('platform', 'assets/platform.png');
+            this.load.image('platform2', 'assets/platform2.png');
             this.load.image('platformground', 'assets/platformground.png');
 
             this.load.image('train', 'assets/train.png');
@@ -98,6 +102,7 @@
             this.load.image('pbbg2', 'assets/pbbg.png');
             this.load.image('pbbg3', 'assets/pbbg2.png');
             this.load.image('lifeup', 'assets/lifeup.png');
+            this.load.image('minleven', 'assets/minleven.png');
 
             // waste
             this.load.image('duck1', 'assets/duck1.png');
@@ -107,6 +112,10 @@
             this.load.image('cont1', 'assets/cont1.png');
             this.load.image('cont2', 'assets/cont2.png');
             this.load.image('cont3', 'assets/cont3.png');
+
+            // warning
+            this.load.image('warningEnemy', 'assets/warningEnemy.png');
+            this.load.image('warningEnemyMirror', 'assets/warningEnemyMirror.png');
 
 
             //scoring
