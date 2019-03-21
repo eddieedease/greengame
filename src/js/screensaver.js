@@ -305,14 +305,9 @@
             //  30 is the frame rate (30fps)
             //  true means it will loop when it finishes
             keypad.animations.play('walk', 1, true);
-
             keypad.visible = false;
-        
             //  Here we add a new animation called 'walk'
             
-
-
-
             // WARNING IMG
             warning = this.game.add.image(this.game.width / 8 * 4, 300, 'warning');
             warning.anchor.set(0.5, 0.5);
@@ -367,7 +362,7 @@
                 letsplay.alpha = 0;
                 animationstarted = false;
                 blockInsert = false;
-                gobackx2 = 0;
+                gobackx2 = 0;   
                 enternumber = false;
                 nogoback.visible = false;
                 max.visible = false;
@@ -388,6 +383,7 @@
                 // TODO need some logic to go through nexxt screen but keep current selection
                 //video.stop();
                 timerdisplay3.setText(" ");
+                timerdisplay3.visible = false;
                 keypad.visible = false;
                 this.game.time.events.remove(chooseloop3);
                 counter = 45;
@@ -399,12 +395,19 @@
                 blockInsert = false;
                 gobackx2 = 0;
                 enternumber = false;
+                inputthisplay.visible = false;
+                neededForPlay.visible = false;
                 nogoback.visible = false;
                 max.visible = false;
                 blockInsert = false;
                 numbertext.visible = false;
                 ntext.visible = false;
                 enternumberpng.visible = false;
+
+                numberentered = false;
+                nogoback.visible = false;
+                max.visible = false;
+                okplay.visible = false;
                 //this.game.state.start('platformer', true, false);
             }
 
@@ -595,8 +598,9 @@
                 // first of, let's check if this is possible
                 // TODO: Implement further
                 if (canPlay === true) {
-
-                     // Here we should catch the accept and cancel buttons
+                    timerdisplay3.setText(" ");
+                    this.game.time.events.remove(chooseloop3);
+                // Here we should catch the accept and cancel buttons
                 numberentered = false;
                 nogoback.visible = false;
                 max.visible = false;
@@ -618,22 +622,22 @@
                 } else {
                    // Do nothing, wait till canPlay will be triggered
                 }
-
-
-
-
             }
 
             // Canelbutton Name
             if (key.keyCode === 88 && readytoplay === false) {
                 console.log('here');
                 // TODO: check if there is a number entered, and update
+                timerdisplay3.setText(" ");
+                this.game.time.events.remove(chooseloop3);
                 if (inputthisplay.text.length === 5){
                     nogoback.visible = true;
                     exit.visible = false;
                     // TODO: Update all values, without play
                     this.handleLocalStorage(inputthisplay.text, numberwaste);
                 }
+                timerdisplay3.setText(" ");
+                this.game.time.events.remove(chooseloop3);
                 gobackx2 = 0;
                 enternumber = false;
                 nogoback.visible = false;
@@ -646,6 +650,7 @@
                 enternumberpng.visible = false;
                 inputthisplay.visible = false;
                 neededForPlay.visible = false;
+                okplay.alpha = 0.5;
                 okplay.visible = false;
                 
                 
@@ -698,10 +703,7 @@
                 animationstarted = true;
                 this.game.stage.backgroundColor = "#000";
                 letsplay.alpha = 1;
-                letsplaytween = this.game.add.tween(letsplay).from({
-                    y: -200
-                }, 1500, Phaser.Easing.Bounce.Out, true);
-                letsplaytween.onComplete.add(this.letplaysdone, this);
+                this.letplaysdone();
                 // this.game.aantalafval++;
                 // var aantalafval = this.game.aantalafval;
                 // localStorage.setItem('aantalafval', aantalafval);
@@ -773,7 +775,7 @@
                     console.log('HEEFT NIET GENOEG PUNTEN, namelijk ' + userStorage + ' nodig is ' + amountOfWasteForPlay);
                     canPlay = false;
                     remain = (amountOfWasteForPlay * (userPlays + 1)) - userStorage;
-                    neededForPlay.text = 'Gooi nog ' + remain + '\nafval in \nom te spelen';
+                    neededForPlay.text = 'Gooi nog ' + remain + '\nafval items in \nom te spelen';
                     okplay.alpha = 0.5;
                 }
 
