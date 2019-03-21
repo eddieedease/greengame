@@ -148,8 +148,8 @@
 
     var exit;
     var max;
-    var gobackx2 = 0;   
-    
+    var gobackx2 = 0;
+
     var keypad;
     var keypadanim;
 
@@ -171,7 +171,7 @@
             sprite = video.addToWorld(0, 0, 0, 0);
             sprite.x = 0;
             sprite.y = 0;
- // The delete button on numpad
+            // The delete button on numpad
             this.game.input.keyboard.onDownCallback = function (e) {
                 if (e.keyCode === 110 && readytoplay === false && enternumber === true) {
                     numberentered = false;
@@ -262,11 +262,11 @@
             timerdisplay3.visible = true;
             timerdisplay3.setText(" ");
 
-            inputthisplay = this.game.add.bitmapText(this.game.world.centerX + 30 , 190, 'scorefont', 'pin', 70);
+            inputthisplay = this.game.add.bitmapText(this.game.world.centerX + 30, 190, 'scorefont', 'pin', 70);
             inputthisplay.visible = true;
             inputthisplay.setText("");
 
-            neededForPlay = this.game.add.bitmapText(this.game.world.centerX + 200 , this.game.world.centerY + 48 , 'scorefont', 'pin', 28);
+            neededForPlay = this.game.add.bitmapText(this.game.world.centerX + 200, this.game.world.centerY + 48, 'scorefont', 'pin', 28);
             neededForPlay.anchor.setTo(0.5, 0.5);
             neededForPlay.visible = true;
             neededForPlay.setText("");
@@ -300,20 +300,20 @@
             //  Here we add a new animation called 'walk'
             //  Because we didn't give any other parameters it's going to make an animation from all available frames in the 'mummy' sprite sheet
             var walk = keypad.animations.add('walk');
-        
+
             //  And this starts the animation playing by using its key ("walk")
             //  30 is the frame rate (30fps)
             //  true means it will loop when it finishes
             keypad.animations.play('walk', 1, true);
             keypad.visible = false;
             //  Here we add a new animation called 'walk'
-            
+
             // WARNING IMG
             warning = this.game.add.image(this.game.width / 8 * 4, 300, 'warning');
             warning.anchor.set(0.5, 0.5);
             warning.visible = false;
 
-            
+
         },
         resetLocalStorage: function () {
             console.log('check');
@@ -362,7 +362,7 @@
                 letsplay.alpha = 0;
                 animationstarted = false;
                 blockInsert = false;
-                gobackx2 = 0;   
+                gobackx2 = 0;
                 enternumber = false;
                 nogoback.visible = false;
                 max.visible = false;
@@ -564,8 +564,8 @@
             if (key.keyCode === 73 && blockInsert === true) {
                 max.visible = false;
                 // Number of waste may not be more than 5, if it is.... 
-                
-                if (numberwaste === 5){
+
+                if (numberwaste === 5) {
                     // MAX reached
                     // TODO: Communicate limit = reached
                     max.visible = true;
@@ -575,14 +575,14 @@
                     ntext.text = numberwaste;
                     // is there a number entered? If so calculate new remain
                     // TODO: above
-                    if (numberentered){
+                    if (numberentered) {
                         console.log("needtoupdate");
                         this.getLocalStorage(inputthisplay.text);
                     }
                 }
-                
-                
-                
+
+
+
 
 
             }
@@ -592,7 +592,7 @@
 
             // if readytoplay false en number is ready to be entered
             if (key.keyCode === 90 && readytoplay === false && numberentered === true) {
-               
+
 
                 // This starts 
                 // first of, let's check if this is possible
@@ -600,27 +600,27 @@
                 if (canPlay === true) {
                     timerdisplay3.setText(" ");
                     this.game.time.events.remove(chooseloop3);
-                // Here we should catch the accept and cancel buttons
-                numberentered = false;
-                nogoback.visible = false;
-                max.visible = false;
-                keypad.visible = false;
-                numbertext.visible = false;
-                okplay.visible = false;
-                ntext.visible = false;
-                enternumberpng.visible = false;
+                    // Here we should catch the accept and cancel buttons
+                    numberentered = false;
+                    nogoback.visible = false;
+                    max.visible = false;
+                    keypad.visible = false;
+                    numbertext.visible = false;
+                    okplay.visible = false;
+                    ntext.visible = false;
+                    enternumberpng.visible = false;
 
-                // TODO: Here comes the API CALL to send it
-                console.log('StudID = ' + inputthisplay.text);
-                console.log('Amount of waste = ' + numberwaste);
-                //
-                userPlays++;
-                this.handleLocalStorage(inputthisplay.text, numberwaste);
+                    // TODO: Here comes the API CALL to send it
+                    console.log('StudID = ' + inputthisplay.text);
+                    console.log('Amount of waste = ' + numberwaste);
+                    //
+                    userPlays++;
+                    this.handleLocalStorage(inputthisplay.text, numberwaste);
                     // This starts the game, so make it an off
                     this.kiesspeler();
                     neededForPlay.visible = false;
                 } else {
-                   // Do nothing, wait till canPlay will be triggered
+                    // Do nothing, wait till canPlay will be triggered
                 }
             }
 
@@ -630,10 +630,9 @@
                 // TODO: check if there is a number entered, and update
                 timerdisplay3.setText(" ");
                 this.game.time.events.remove(chooseloop3);
-                if (inputthisplay.text.length === 5){
+                if (inputthisplay.text.length === 5) {
                     nogoback.visible = true;
                     exit.visible = false;
-                    // TODO: Update all values, without play
                     this.handleLocalStorage(inputthisplay.text, numberwaste);
                 }
                 timerdisplay3.setText(" ");
@@ -652,8 +651,8 @@
                 neededForPlay.visible = false;
                 okplay.alpha = 0.5;
                 okplay.visible = false;
-                
-                
+
+
                 // Check if there is a number entered
 
             }
@@ -764,7 +763,7 @@
                 currentStudId = _studid;
                 // NOTE:
                 // is the current amount of waste enough to start a game?
-                if (numberwaste >= amountOfWasteForPlay){
+                if (numberwaste >= amountOfWasteForPlay) {
                     // Can play
                     canPlay = true;
                     console.log('HEEFT GENOEG PUNTEN, namelijk ' + userStorage + ' nodig is ' + amountOfWasteForPlay);
@@ -788,7 +787,7 @@
                     canPlay = true;
                     neededForPlay.text = 'Je kunt spelen!';
                     okplay.alpha = 1;
-                } else { 
+                } else {
                     // Not enough points so Should note howmany
                     console.log('Not enough points ' + (+userStorage + numberwaste) + ' we need at least ' + (amountOfWasteForPlay * (userPlays + 1)));
                     canPlay = false;
@@ -796,7 +795,7 @@
                     remain = (amountOfWasteForPlay * (userPlays + 1)) - ((+userStorage + numberwaste));
                     neededForPlay.text = 'Gooi nog ' + remain + '\nafval in \nom te spelen';
                     okplay.alpha = 0.5;
-                }  
+                }
             }
 
 
