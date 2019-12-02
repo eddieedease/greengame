@@ -363,6 +363,7 @@
                 animationstarted = false;
                 blockInsert = false;
                 gobackx2 = 0;
+                console.log("timerloop");
                 enternumber = false;
                 nogoback.visible = false;
                 max.visible = false;
@@ -381,6 +382,7 @@
         timerLoop3: function () {
             if (counter === 0) {
                 // TODO need some logic to go through nexxt screen but keep current selection
+                console.log("timerloop3");
                 //video.stop();
                 timerdisplay3.setText(" ");
                 timerdisplay3.visible = false;
@@ -397,7 +399,6 @@
                 enternumber = false;
                 inputthisplay.visible = false;
                 neededForPlay.visible = false;
-                nogoback.visible = false;
                 max.visible = false;
                 blockInsert = false;
                 numbertext.visible = false;
@@ -405,9 +406,10 @@
                 enternumberpng.visible = false;
 
                 numberentered = false;
-                nogoback.visible = false;
                 max.visible = false;
                 okplay.visible = false;
+                nogoback.visible = false;
+                exit.visible = false;
                 //this.game.state.start('platformer', true, false);
             }
 
@@ -728,9 +730,10 @@
         inputtweendone: function () {
             console.log('comes here');
             enternumber = true;
-            nogoback.visible = false;
+            nogoback.visible = true;
             exit.visible = true;
             okplay.visible = true;
+            timerdisplay3.visible = true;
             numbertext.visible = true;
             ntext.visible = true;
             enternumberpng.visible = true;
