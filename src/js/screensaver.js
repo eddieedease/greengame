@@ -574,6 +574,7 @@
                 } else {
                     // MAX is not reached, add up
                     numberwaste++;
+                    counter = 45;
                     ntext.text = numberwaste;
                     // is there a number entered? If so calculate new remain
                     // TODO: above
@@ -730,7 +731,7 @@
         inputtweendone: function () {
             console.log('comes here');
             enternumber = true;
-            nogoback.visible = true;
+            nogoback.visible = false;
             exit.visible = true;
             okplay.visible = true;
             timerdisplay3.visible = true;
